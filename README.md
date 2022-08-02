@@ -6,4 +6,4 @@ A: Left\
 S: Down\
 D: Right\
 I: Zoom in\
-O: Zoom out\
+O: Zoom out
