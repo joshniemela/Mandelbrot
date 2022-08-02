@@ -2,7 +2,8 @@ using CUDA, GLMakie, BenchmarkTools
 
 const MAX_STEPS = 500
 function mandelbrot(c)
-    z = n = 0
+    z = zero(c)
+    n = 0
     while abs2(z) < 4 && n < MAX_STEPS
         z = z^2+c
         n += 1
@@ -26,6 +27,7 @@ heat = @lift begin
     y = collect(LinRange($Y_MIN, $Y_MAX, round(Int, 1/aspect_ratio*sqrt($PIXELS), RoundUp)))
     z = CuArray(x.+(y*im)') #produce the big grid of stuff
     Array(map(mandelbrot, z))
+
 end
 
 on(events(fig).keyboardbutton) do event
@@ -61,6 +63,6 @@ on(events(fig).keyboardbutton) do event
     end
 end
 
-heatmap!(ax, x, y, heat, colormap = (:dense))
+heatmap!(ax, heat, colormap = (:dense), interpolate=true)
 
 fig
