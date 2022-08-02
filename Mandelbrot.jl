@@ -40,12 +40,18 @@ on(events(fig).keyboardbutton) do event
     if ispressed(fig, Keyboard.w)
         Y_MAX[]=Y_MAX[]+.05y_length
         Y_MIN[]=Y_MIN[]+.05y_length
-    endup
+    end
+    # Move left
     if ispressed(fig, Keyboard.a)
         X_MAX[]=X_MAX[]-.05x_length
         X_MIN[]=X_MIN[]-.05x_length
     end
     # Move down
+    if ispressed(fig, Keyboard.s)
+        Y_MAX[]=Y_MAX[]-.05y_length
+        Y_MIN[]=Y_MIN[]-.05y_length
+    end
+    # Move right
     if ispressed(fig, Keyboard.d)
         X_MAX[]=X_MAX[]+.05x_length
         X_MIN[]=X_MIN[]+.05x_length
