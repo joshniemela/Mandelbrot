@@ -1,8 +1,9 @@
 using CUDA, GLMakie, BenchmarkTools
 
 const MAX_STEPS = 500 # Sets the max steps for the mandelbrot escape time algorithm.
+const PIXELS = 1e6 # Set the total number of pixels for the plot, higher numbers means higher resolution.
 
-# Escape time implmentation of the Mandelbrot set
+# Escape time implmentation of the Mandelbrot function.
 function mandelbrot(c)
     z = zero(c)
     n = 0
@@ -19,51 +20,51 @@ X_MAX = Observable(0.6)
 Y_MIN = Observable(-1.5)
 Y_MAX = Observable(1.5)
 
-# Initialise figure and axis
+# Initialise the figure and axis.
 fig = Figure()
 ax = Axis(fig[1,1])
 
-# Command to compute Mandelbrot set
+# Command to compute Mandelbrot set.
 heat = @lift begin
     aspect_ratio = ($X_MAX-$X_MIN)/($Y_MAX-$Y_MIN)
-    x = collect(LinRange($X_MIN, $X_MAX, round(Int, aspect_ratio*sqrt($PIXELS), RoundUp)))
-    y = collect(LinRange($Y_MIN, $Y_MAX, round(Int, 1/aspect_ratio*sqrt($PIXELS), RoundUp)))
-    z = CuArray(x.+(y*im)') # Produce the complex grid
-    Array(map(mandelbrot, z)) # Compute the Mandelbrot set
+    x = collect(LinRange($X_MIN, $X_MAX, round(Int, aspect_ratio*sqrt(PIXELS), RoundUp)))
+    y = collect(LinRange($Y_MIN, $Y_MAX, round(Int, 1/aspect_ratio*sqrt(PIXELS), RoundUp)))
+    z = CuArray(x.+(y*im)') # Produce the complex grid.
+    Array(map(mandelbrot, z)) # Compute the Mandelbrot set.
 end
 
-# Keybindings to make Makie interactive
+# Keybindings to make Makie interactive.
 on(events(fig).keyboardbutton) do event
     y_length = Y_MAX[]-Y_MIN[]
     x_length = X_MAX[]-X_MIN[]
-    # Move up
+    # Move up.
     if ispressed(fig, Keyboard.w)
         Y_MAX[]=Y_MAX[]+.05y_length
         Y_MIN[]=Y_MIN[]+.05y_length
     end
-    # Move left
+    # Move left.
     if ispressed(fig, Keyboard.a)
         X_MAX[]=X_MAX[]-.05x_length
         X_MIN[]=X_MIN[]-.05x_length
     end
-    # Move down
+    # Move down.
     if ispressed(fig, Keyboard.s)
         Y_MAX[]=Y_MAX[]-.05y_length
         Y_MIN[]=Y_MIN[]-.05y_length
     end
-    # Move right
+    # Move right.
     if ispressed(fig, Keyboard.d)
         X_MAX[]=X_MAX[]+.05x_length
         X_MIN[]=X_MIN[]+.05x_length
     end
-    # Zoom in
+    # Zoom in.
     if ispressed(fig, Keyboard.i)
         X_MAX[]=X_MAX[]-.15x_length
         X_MIN[]=X_MIN[]+.15x_length
         Y_MAX[]=Y_MAX[]-.15y_length
         Y_MIN[]=Y_MIN[]+.15y_length
     end
-    # Zoom out
+    # Zoom out.
     if ispressed(fig, Keyboard.o)
         X_MAX[]=X_MAX[]+.15x_length
         X_MIN[]=X_MIN[]-.15x_length
