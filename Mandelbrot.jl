@@ -19,6 +19,7 @@ X_MIN = Observable(-2.0)
 X_MAX = Observable(0.6)
 Y_MIN = Observable(-1.5)
 Y_MAX = Observable(1.5)
+COLOURMAP = :dense # Colourmap used for the heatmap
 
 # Initialise the figure and axis.
 fig = Figure()
@@ -74,6 +75,6 @@ on(events(fig).keyboardbutton) do event
 end
 
 # Generates the acutal plot and updates on keyboard events.
-heatmap!(ax, heat, colormap = (:dense), interpolate=true)
+heatmap!(ax, heat, colormap = COLOURMAP, interpolate=true)
 
 fig
