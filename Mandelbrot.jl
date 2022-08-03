@@ -1,4 +1,4 @@
-using CUDA, GLMakie, BenchmarkTools
+using CUDA, GLMakie
 
 const MAX_STEPS = 500 # Sets the max steps for the mandelbrot escape time algorithm.
 const PIXELS = 1e6 # Set the total number of pixels for the plot, higher numbers means higher resolution.
