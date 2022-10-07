@@ -30,7 +30,7 @@ heat = @lift begin
     aspect_ratio = ($X_MAX-$X_MIN)/($Y_MAX-$Y_MIN)
     x = collect(LinRange($X_MIN, $X_MAX, round(Int, aspect_ratio*sqrt(PIXELS), RoundUp)))
     y = collect(LinRange($Y_MIN, $Y_MAX, round(Int, 1/aspect_ratio*sqrt(PIXELS), RoundUp)))
-    z = CuArray(x.+(y*im)') # Produce the complex grid.
+    z = CuArray(x.+y'*im) # Produce the complex grid.
     Array(map(mandelbrot, z)) # Compute the Mandelbrot set.
 end
 
@@ -78,3 +78,4 @@ end
 heatmap!(ax, heat, colormap = COLOURMAP, interpolate=true)
 
 fig
+
