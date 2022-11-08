@@ -8,7 +8,7 @@ function mandelbrot(c)
     z = zero(c)
     n = 0
     while abs2(z) < 4 && n < MAX_STEPS
-        z = z^2+c
+        z = z^2 + c
         n += 1
     end
     return n
@@ -27,10 +27,10 @@ ax = Axis(fig[1,1])
 
 # Command to compute Mandelbrot set.
 heat = @lift begin
-    aspect_ratio = ($X_MAX-$X_MIN)/($Y_MAX-$Y_MIN)
-    x = collect(LinRange($X_MIN, $X_MAX, round(Int, aspect_ratio*sqrt(PIXELS), RoundUp)))
-    y = collect(LinRange($Y_MIN, $Y_MAX, round(Int, 1/aspect_ratio*sqrt(PIXELS), RoundUp)))
-    z = CuArray(x.+y'*im) # Produce the complex grid.
+    aspect_ratio = ($X_MAX - $X_MIN)/($Y_MAX - $Y_MIN)
+    x = collect(LinRange($X_MIN, $X_MAX, round(Int, aspect_ratio * sqrt(PIXELS), RoundUp)))
+    y = collect(LinRange($Y_MIN, $Y_MAX, round(Int, inv(aspect_ratio) * sqrt(PIXELS), RoundUp)))
+    z = CuArray(x .+ y' * im) # Produce the complex grid.
     Array(map(mandelbrot, z)) # Compute the Mandelbrot set.
 end
 
@@ -40,37 +40,37 @@ on(events(fig).keyboardbutton) do event
     x_length = X_MAX[]-X_MIN[]
     # Move up.
     if ispressed(fig, Keyboard.w)
-        Y_MAX[]=Y_MAX[]+.05y_length
-        Y_MIN[]=Y_MIN[]+.05y_length
+        Y_MAX[]=Y_MAX[] + 0.05y_length
+        Y_MIN[]=Y_MIN[] + 0.05y_length
     end
     # Move left.
     if ispressed(fig, Keyboard.a)
-        X_MAX[]=X_MAX[]-.05x_length
-        X_MIN[]=X_MIN[]-.05x_length
+        X_MAX[]=X_MAX[] - 0.05x_length
+        X_MIN[]=X_MIN[] - 0.05x_length
     end
     # Move down.
     if ispressed(fig, Keyboard.s)
-        Y_MAX[]=Y_MAX[]-.05y_length
-        Y_MIN[]=Y_MIN[]-.05y_length
+        Y_MAX[]=Y_MAX[] - 0.05y_length
+        Y_MIN[]=Y_MIN[] - 0.05y_length
     end
     # Move right.
     if ispressed(fig, Keyboard.d)
-        X_MAX[]=X_MAX[]+.05x_length
-        X_MIN[]=X_MIN[]+.05x_length
+        X_MAX[]=X_MAX[] + 0.05x_length
+        X_MIN[]=X_MIN[] + 0.05x_length
     end
     # Zoom in.
     if ispressed(fig, Keyboard.i)
-        X_MAX[]=X_MAX[]-.15x_length
-        X_MIN[]=X_MIN[]+.15x_length
-        Y_MAX[]=Y_MAX[]-.15y_length
-        Y_MIN[]=Y_MIN[]+.15y_length
+        X_MAX[]=X_MAX[] - 0.15x_length
+        X_MIN[]=X_MIN[] + 0.15x_length
+        Y_MAX[]=Y_MAX[] - 0.15y_length
+        Y_MIN[]=Y_MIN[] + 0.15y_length
     end
     # Zoom out.
     if ispressed(fig, Keyboard.o)
-        X_MAX[]=X_MAX[]+.15x_length
-        X_MIN[]=X_MIN[]-.15x_length
-        Y_MAX[]=Y_MAX[]+.15y_length
-        Y_MIN[]=Y_MIN[]-.15y_length
+        X_MAX[]=X_MAX[] + 0.15x_length
+        X_MIN[]=X_MIN[] - 0.15x_length
+        Y_MAX[]=Y_MAX[] + 0.15y_length
+        Y_MIN[]=Y_MIN[] - 0.15y_length
     end
 end
 
